@@ -1,12 +1,22 @@
+
 using UnityEngine;
 
 public class EndTrigger : MonoBehaviour
 {
     public GameManager gameManager;
 
-    void OnTriggerEnter()
+    private void Awake()
     {
-        gameManager.CompleteLevel();
+        if (gameManager == null)
+            gameManager = FindObjectOfType<GameManager>();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        if (gameManager != null)
+            gameManager.CompleteLevel();
+    }
 }

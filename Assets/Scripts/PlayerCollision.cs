@@ -1,28 +1,35 @@
+
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    // Reference from PlayerMovement C# script
     public PlayersMovement movement;
 
-    // OnCollisionEnter is a function created by unity itself and if spelled in a wrong manner unity will not throw any error it just wouldn't work
-    void OnCollisionEnter (Collision collisionInfo)
+    private GameManager gameManager;
+    private bool hasCollided;
+
+    private void Awake()
     {
-        //if (collisionInfo.collider.name == "Obstacle")
-        //{
-        //    Debug.Log("We hit an obstacle");
-        //}
+        if (movement == null)
+            movement = GetComponent<PlayersMovement>();
 
+        gameManager = FindObjectOfType<GameManager>();
+    }
 
+    private void OnCollisionEnter(Collision collisionInfo)
+    {
+        if (hasCollided)
+            return;
 
-        // prefab is used when we have to create multiple same thing in the scene
-
-        if (collisionInfo.collider.tag == "Obstacle")
+        if (collisionInfo.collider.CompareTag("Obstacle"))
         {
-            //Debug.Log("We hit an obstacle");
-            movement.enabled = false;
+            hasCollided = true;
 
-            FindObjectOfType<GameManager>().EndGame();
+            if (movement != null)
+                movement.enabled = false;
+
+            if (gameManager != null)
+                gameManager.EndGame();
         }
     }
 }

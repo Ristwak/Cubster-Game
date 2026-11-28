@@ -1,18 +1,19 @@
+
 using UnityEngine;
 using TMPro;
 
 public class Score : MonoBehaviour
 {
-
     public Transform player;
     public TextMeshProUGUI scoreText;
 
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // player.position.z;
-        scoreText.text = player.position.z.ToString("0");
+        if (player == null || scoreText == null)
+            return;
 
+        float score = Mathf.Max(0f, player.position.z);
+
+        scoreText.text = score.ToString("0");
     }
 }
